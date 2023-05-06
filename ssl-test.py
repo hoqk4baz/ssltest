@@ -33,9 +33,14 @@ while True:
         print(R+'Yanlış seçim yaptınız. Tekrar deneyin.'+R)
         time.sleep(2)
 
-for host in hostlar:
-    sonuc = subprocess.run(['timeout', '2', 'openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
-    if 'CONNECTED' in sonuc.stdout:
-        print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
-    else:
-        print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
+with open('baglananlar.txt', 'w') as baglananlar:
+    pass
+
+with open('baglananlar.txt', 'a') as baglananlar:
+    for host in hostlar:
+        sonuc = subprocess.run(['timeout', '2', 'openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
+        if 'CONNECTED' in sonuc.stdout:
+            print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
+            baglananlar.write(f'{host}\n')
+        else:
+            print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
