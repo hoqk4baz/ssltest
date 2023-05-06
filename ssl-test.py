@@ -34,7 +34,7 @@ while True:
         time.sleep(2)
 
 for host in hostlar:
-    sonuc = subprocess.run(['timeout', '0.5', 'openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
+    sonuc = subprocess.run(['timeout', '1', 'openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
     if 'CONNECTED' in sonuc.stdout:
         print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
     else:
