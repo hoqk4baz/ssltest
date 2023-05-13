@@ -36,19 +36,21 @@ while True:
 with open('baglananlar.txt', 'w') as baglananlar:
     pass
 
-for host in hostlar:
-    try:
-        process = subprocess.run(['openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-        output = process.stdout.read().decode()
-        if 'CONNECTED' in output:
-            print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
-            with open('baglananlar.txt', 'a') as baglananlar:
-                baglananlar.write(f'{host}\n')
-            process.kill() # Bağlantı başarılı olduğunda işlemi sonlandır
-            break # Döngüden çık
-        else:
-            print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
-            process.kill() # Bağlantı başarısız olduğunda işlemi sonlandır
-    except:
-        print(R+f'{host}: BIR HATA OLUSTU'+R)
-
+with open('baglananlar.txt', 'a') as baglananlar:
+    for host in hostlar:
+        process = subprocess.Popen(['openssl', 's_client', '-connect', 'de02.sshocean.net:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                if 'CONNECTED' in output.strip():
+                    print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
+                    baglananlar.write(f'{host}\n')
+                    process.kill()
+                    break
+                else:
+                    print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
+                    process.kill()
+                    break
+            time.sleep(0.1)
