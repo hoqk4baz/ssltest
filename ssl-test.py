@@ -38,11 +38,12 @@ with open('baglananlar.txt', 'w') as baglananlar:
 
 with open('baglananlar.txt', 'a') as baglananlar:
     for host in hostlar:
-        sonuc = subprocess.run(['openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
+        process = subprocess.run(['openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
-        if 'CONNECTED' in sonuc.stdout:
+        stdout_data, stderr_data = process.communicate(timeout=1.3)
+
+        if 'CONNECTED' in stdout_data:
             print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
             baglananlar.write(f'{host}\n')
-            continue # bir sonraki hosta geç
         else:
             print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
