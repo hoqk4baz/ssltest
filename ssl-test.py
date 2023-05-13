@@ -1,5 +1,6 @@
 import subprocess
 import time
+import concurrent.futures
 
 M = "\033[34m"
 Y = "\033[32m"
@@ -36,23 +37,23 @@ while True:
 with open('baglananlar.txt', 'w') as baglananlar:
     pass
 
-def connect_to_host(host):
+def denenecek_hostlar(host):
     with open('baglananlar.txt', 'a') as baglananlar:
-        process = subprocess.Popen(['openssl', 's_client', '-connect', 'de02.sshocean.net:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        sonuc = subprocess.Popen(['openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
+            cikis_sonuc = sonuc.stdout.readline()
+            if cikis_sonuc == '' and sonuc.poll() is not None:
                 break
-            if output:
-                if 'CONNECTED' in output.strip():
+            if cikis_sonuc:
+                if 'CONNECTED' in cikis_sonuc.strip():
                     print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
                     baglananlar.write(f'{host}\n')
-                    process.kill()
+                    sonuc.kill()
                     break
                 else:
                     print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
-                    process.kill()
+                    sonuc.kill()
                     break
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    executor.map(connect_to_host, hostlar)
+    executor.map(denenecek_hostlar, hostlar)
