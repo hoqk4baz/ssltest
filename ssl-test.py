@@ -11,17 +11,17 @@ print(M+" | |  | | __ _ _ __| | __ | |__   _ __  ______ _ "+M)
 print(M+" | |  | |/ _` | '__| |/ / |  __| | '_ \|_  / _` |"+M)
 print(M+" | |__| | (_| | |  |   <  | |____| | | |/ / (_| |"+M)
 print(M+" |_____/ \__,_|_|  |_|\_\ |______|_| |_/_/ \__,_|"+M)
-print(R+" ‎Merhaba! Ben Python kullanıyorum.  TG: dark_enza"+R)
+print(R+" Merhaba! Ben Python kullanıyorum.  TG: dark_enza"+R)
 print("")
-print(Y+" Internetsiz SSL/SNI Test Araci"+Y)
-print(R+" Telegram Kanalim : @dwstoree"+R)
+print(Y+" İnternetsiz SSL/SNI Test Aracı"+Y)
+print(R+" Telegram Kanalım : @dwstoree"+R)
 
 
 while True:
-    secimyap = input(M+'[1] Hostu elle gir\n[2] Hostu host.txt dosyasindan al\n[3] Cikis\nSeciminiz: '+M)
+    secimyap = input(M+'[1] Hostu elle gir\n[2] Hostu host.txt dosyasından al\n[3] Cikis\nSeçiminiz: '+M)
 
     if secimyap == '1':
-        hostlar = input('Hostu gir (Coklu ise bosluk ile ayirin): ').split()
+        hostlar = input('Hostu gir (Çoklu ise boşluk ile ayırın): ').split()
         break
     elif secimyap == '2':
         with open('host.txt', 'r') as f:
@@ -30,7 +30,7 @@ while True:
     elif secimyap == '3':
         exit()
     else:
-        print(R+'Yanlis secim yaptiniz. Tekrar deneyin.'+R)
+        print(R+'Yanlış seçim yaptınız. Tekrar deneyin.'+R)
         time.sleep(2)
 
 with open('baglananlar.txt', 'w') as baglananlar:
@@ -38,11 +38,11 @@ with open('baglananlar.txt', 'w') as baglananlar:
 
 with open('baglananlar.txt', 'a') as baglananlar:
     for host in hostlar:
-        sonuc = subprocess.run(['openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True, timeout=2)
+        sonuc = subprocess.run(['timeout', '1.3', 'openssl', 's_client', '-connect', 'ssl.dark-enza.club:443', '-servername', host], capture_output=True, text=True)
 
         print(sonuc)
         if 'CONNECTED' in sonuc.stdout:
-            print(Y+f'{host}: BAGLANTI BASARILI'+Y)
+            print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
             baglananlar.write(f'{host}\n')
         else:
-            print(R+f'{host}: BAGLANTI BASARISIZ'+R)
+            print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
