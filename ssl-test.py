@@ -36,8 +36,8 @@ while True:
 with open('baglananlar.txt', 'w') as baglananlar:
     pass
 
-with open('baglananlar.txt', 'a') as baglananlar:
-    for host in hostlar:
+def connect_to_host(host):
+    with open('baglananlar.txt', 'a') as baglananlar:
         process = subprocess.Popen(['openssl', 's_client', '-connect', 'de02.sshocean.net:443', '-servername', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         while True:
             output = process.stdout.readline()
@@ -53,4 +53,6 @@ with open('baglananlar.txt', 'a') as baglananlar:
                     print(R+f'{host}: BAĞLANTI BAŞARISIZ'+R)
                     process.kill()
                     break
-            time.sleep(0.1)
+
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    executor.map(connect_to_host, hostlar)
