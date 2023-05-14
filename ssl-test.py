@@ -45,8 +45,8 @@ def denenecek_hostlar(host):
             if cikis_sonuc == '' and sonuc.poll() is not None:
                 break
             if cikis_sonuc:
-                if 'CONNECTED' in cikis_sonuc.strip():
-                    print(Y+f'{host}: BAĞLANTI BAŞARILI'+Y)
+                if 'Protocol' in cikis_sonuc.strip():
+                    print(Y+f'{host}: BAĞLANTI BAŞARILI\n{cikis_sonuc.strip}'+Y)
                     baglananlar.write(f'{host}\n')
                     sonuc.kill()
                     break
